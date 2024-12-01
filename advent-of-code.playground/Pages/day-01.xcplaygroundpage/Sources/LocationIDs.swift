@@ -24,7 +24,7 @@ public struct LocationIDs {
 
             rawText.matches(of: regex).forEach { match in
                 if let left = Int(match.1), let right = Int(match.2) {
-                    
+                    self.count += 1
                     self.left.append(left)
                     self.right.append(right)
                 }
