@@ -12,9 +12,11 @@ public protocol Puzzle {
 
     var puzzleFile: String { get }
 
-    var inputType: InputType { get set }
+    var inputType: InputType { get }
 
-    func solve() -> OutputType
+    func solvePartOne() -> OutputType
+
+    func solvePartTwo() -> OutputType
 }
 
 public extension Puzzle {

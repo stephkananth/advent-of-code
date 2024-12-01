@@ -14,13 +14,12 @@ public struct LocationIDs {
 
     public init(from file: String) {
         guard let url = Bundle.main.url(forResource: file, withExtension: ".txt") else {
-            print("Unable to get url for file: \(file)")
-            return
+            fatalError("Unable to get url for file: \(file)")
         }
 
         do {
             let rawText = try String(contentsOf: url, encoding: .utf8)
-            let regex = /(?:(\d+)(?:\s{3})(\d+)(?:\n))/
+            let regex = /(?:(\d+)(?:\s{3})(\d+)(?:\n?))/
 
             rawText.matches(of: regex).forEach { match in
                 if let left = Int(match.1), let right = Int(match.2) {
@@ -30,7 +29,7 @@ public struct LocationIDs {
                 }
             }
         } catch {
-            print(error)
+            fatalError(error.localizedDescription)
         }
 
         left.sort()

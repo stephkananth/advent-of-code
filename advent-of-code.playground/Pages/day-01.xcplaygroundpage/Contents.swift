@@ -1,29 +1,21 @@
 import Foundation
 
-// MARK: - Day 1
+// MARK: - Part 1
 
-let exampleSolution = 11
+let partOneExampleSolution = 11
 
-let exampleResult = Day1(.example).solve()
+let partOneExampleResult = Day1(.example).solvePartOne()
 
-let result = Day1(.puzzle).solve()
+let partOneResult = Day1(.puzzle).solvePartOne()
 
-print(result)
+print("part 1: \(partOneResult)")
 
-// MARK: - Solution
+// MARK: - Part 2
 
-struct Day1: Puzzle {
-    let puzzleFile = #file
-    var inputType: InputType
+let partTwoExampleSolution = 31
 
-    public init(_ inputType: InputType) {
-        self.inputType = inputType
-    }
+let partTwoExampleResult = Day1(.example).solvePartTwo()
 
-    func solve() -> Int {
-        let locationIds = LocationIDs(from: inputFile)
-        return (0..<locationIds.count).reduce(into: 0) { partial, i in
-            partial += abs(locationIds.left[i] - locationIds.right[i])
-        }
-    }
-}
+let partTwoResult = Day1(.puzzle).solvePartTwo()
+
+print("part 2: \(partTwoResult)")
