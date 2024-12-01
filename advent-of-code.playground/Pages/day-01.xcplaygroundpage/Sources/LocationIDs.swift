@@ -14,6 +14,7 @@ public struct LocationIDs {
 
     public init(from file: String) {
         guard let url = Bundle.main.url(forResource: file, withExtension: ".txt") else {
+            print("Unable to get url for file: \(file)")
             return
         }
 
