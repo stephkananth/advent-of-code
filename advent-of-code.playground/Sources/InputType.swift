@@ -10,6 +10,6 @@ public enum InputType: String, CaseIterable {
     case puzzle = "inputs"
 
     func getFile(for puzzleFile: String) -> String {
-        "\(rawValue)/\(puzzleFile.id).txt"
+        "\(rawValue)/\(puzzleFile.id)"
     }
 }
