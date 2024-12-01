@@ -1,19 +1,20 @@
+// MARK: - Day 1
 
-Day1(.example).solve()
+let exampleSolution = 11
 
-public struct Day1 {
-    let inputType: InputType
+let exampleResult = Day1(.example).solve()
 
-    var inputFile: String {
-        #file.getInputFile(for: inputType)
-    }
+// MARK: - Solution
 
-    public init(_ inputType: InputType = .puzzle) {
+struct Day1: Puzzle {
+    let puzzleFile = #file
+    var inputType: InputType
+
+    public init(_ inputType: InputType) {
         self.inputType = inputType
     }
 
-    public func solve() -> Int {
-        print(inputFile)
-        return 0
+    func solve() -> Int {
+        0
     }
 }
