@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Day2: Puzzlable {
+public struct Day2: Solvable {
     public let puzzleFile = #file
     public let inputType: InputType
 

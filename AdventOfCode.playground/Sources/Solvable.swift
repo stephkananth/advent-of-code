@@ -1,5 +1,5 @@
 //
-//  Puzzlable.swift
+//  Solvable.swift
 //
 //
 //  Created by Stephanie Ananth on 12/1/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol Puzzlable {
+public protocol Solvable {
     associatedtype Input: Parsable
     associatedtype Output: Equatable
 
@@ -24,7 +24,7 @@ public protocol Puzzlable {
     mutating func solvePartTwo() -> Output
 }
 
-public extension Puzzlable {
+public extension Solvable {
     var inputFile: String {
         puzzleFile.getInputFile(for: inputType)
     }
