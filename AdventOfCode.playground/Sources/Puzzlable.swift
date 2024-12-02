@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol Puzzlable {
-    associatedtype OutputType: Equatable
+    associatedtype Output: Equatable
     associatedtype Input: Inputable
 
     var puzzleFile: String { get }
@@ -19,9 +19,9 @@ public protocol Puzzlable {
 
     init(_ inputType: InputType)
 
-    mutating func solvePartOne() -> OutputType
+    mutating func solvePartOne() -> Output
 
-    mutating func solvePartTwo() -> OutputType
+    mutating func solvePartTwo() -> Output
 }
 
 public extension Puzzlable {
