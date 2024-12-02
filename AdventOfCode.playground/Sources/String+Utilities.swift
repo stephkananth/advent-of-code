@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension String {
+extension String {
     var id: String {
         (URL(filePath: self).lastPathComponent as NSString).deletingPathExtension
     }

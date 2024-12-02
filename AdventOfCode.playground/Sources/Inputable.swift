@@ -23,9 +23,9 @@ public extension Inputable {
 
 fileprivate extension Inputable {
     func getURL(from file: String) -> URL {
-        guard let url = Bundle.main.url(forResource: file, withExtension: ".txt") else {
-            fatalError("Unable to get url for file: \(file)")
+        if let url = Bundle.main.url(forResource: file, withExtension: ".txt") {
+            return url
         }
-        return url
+        fatalError("Unable to get url for file: \(file)")
     }
 }

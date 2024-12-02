@@ -9,16 +9,19 @@ import Foundation
 
 public protocol Puzzlable {
     associatedtype OutputType: Equatable
+    associatedtype Input: Inputable
 
     var puzzleFile: String { get }
 
     var inputType: InputType { get }
 
+    var input: Input! { get }
+
     init(_ inputType: InputType)
 
-    func solvePartOne() -> OutputType
+    mutating func solvePartOne() -> OutputType
 
-    func solvePartTwo() -> OutputType
+    mutating func solvePartTwo() -> OutputType
 }
 
 public extension Puzzlable {

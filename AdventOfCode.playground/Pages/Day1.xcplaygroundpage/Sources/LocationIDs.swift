@@ -8,9 +8,9 @@
 import Foundation
 
 public struct LocationIDs: Inputable {
-    public private(set) var count: Int = 0
-    public private(set) var left: [Int] = []
-    public private(set) var right: [Int] = []
+    private(set) var count: Int = 0
+    private(set) var left: [Int] = []
+    private(set) var right: [Int] = []
 
     public init(from file: String) {
         let rawText = getRawText(from: file)

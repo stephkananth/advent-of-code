@@ -1,30 +1,35 @@
 //
 //  Day1.swift
-//  
+//
 //
 //  Created by Stephanie Ananth on 12/1/24.
 //
 
+import Foundation
+
 public struct Day1: Puzzlable {
     public let puzzleFile = #file
-    public private(set) var inputType: InputType
+    public let inputType: InputType
+
+    public private(set) var input: LocationIDs!
 
     public init(_ inputType: InputType) {
         self.inputType = inputType
+        defer {
+            self.input = LocationIDs(from: inputFile)
+        }
     }
 
     public func solvePartOne() -> Int {
-        let locationIds = LocationIDs(from: inputFile)
-        return (0..<locationIds.count).reduce(into: 0) { partialSum, i in
-            partialSum += abs(locationIds.left[i] - locationIds.right[i])
+        (0..<input.count).reduce(into: 0) { partialSum, i in
+            partialSum += abs(input.left[i] - input.right[i])
         }
     }
 
     public func solvePartTwo() -> Int {
-        let locationIds = LocationIDs(from: inputFile)
-        return (0..<locationIds.count).reduce(into: 0) { partialSum, i in
-            let left = locationIds.left[i]
-            partialSum += (left * locationIds.right.filter { $0 == left }.count)
+        (0..<input.count).reduce(into: 0) { partialSum, i in
+            let left = input.left[i]
+            partialSum += (left * input.right.filter { $0 == left }.count)
         }
     }
 }

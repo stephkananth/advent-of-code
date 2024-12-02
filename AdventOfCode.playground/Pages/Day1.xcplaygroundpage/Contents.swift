@@ -1,21 +1,27 @@
 import Foundation
 
+let example = Day1(.example)
+let puzzle = Day1(.puzzle)
+
+print("Day 1")
+print("------")
+
 // MARK: - Part 1
 
 let partOneExampleSolution = 11
 
-let partOneExampleResult = Day1(.example).solvePartOne()
+let partOneExampleResult = example.solvePartOne()
 
-let partOneResult = Day1(.puzzle).solvePartOne()
+let partOneResult = puzzle.solvePartOne()
 
-print("part 1: \(partOneResult)")
+print("Part 1: \(partOneResult)")
 
 // MARK: - Part 2
 
 let partTwoExampleSolution = 31
 
-let partTwoExampleResult = Day1(.example).solvePartTwo()
+let partTwoExampleResult = example.solvePartTwo()
 
-let partTwoResult = Day1(.puzzle).solvePartTwo()
+let partTwoResult = puzzle.solvePartTwo()
 
-print("part 2: \(partTwoResult)")
+print("Part 2: \(partTwoResult)\n")
