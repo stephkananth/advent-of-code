@@ -7,11 +7,11 @@
 
 import Foundation
 
-public protocol Inputtable {
+public protocol Parsable {
     init(from file: String)
 }
 
-public extension Inputtable {
+public extension Parsable {
     func getRawText(from file: String) -> String {
         do {
             return try String(contentsOf: getURL(from: file), encoding: .utf8)
@@ -21,7 +21,7 @@ public extension Inputtable {
     }
 }
 
-fileprivate extension Inputtable {
+fileprivate extension Parsable {
     func getURL(from file: String) -> URL {
         if let url = Bundle.main.url(forResource: file, withExtension: ".txt") {
             return url

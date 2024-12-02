@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct LocationIDs: Inputtable {
+public struct LocationIDs: Parsable {
     private(set) var count: Int = 0
     private(set) var left: [Int] = []
     private(set) var right: [Int] = []
