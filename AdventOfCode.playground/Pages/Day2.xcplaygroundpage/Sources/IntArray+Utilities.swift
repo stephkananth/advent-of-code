@@ -5,6 +5,8 @@
 //  Created by Stephanie Ananth on 12/2/24.
 //
 
+import Foundation
+
 extension [Int] {
     var isSafe: Bool {
         guard count > 1 else { return true }

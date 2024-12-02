@@ -5,6 +5,8 @@
 //  Created by Stephanie Ananth on 12/2/24.
 //
 
+import Foundation
+
 open class Puzzle<Input: Parsable> {
     open var puzzleFile: String {
         fatalError("Must override puzzleFile to #file")
