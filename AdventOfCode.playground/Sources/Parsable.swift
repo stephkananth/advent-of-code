@@ -13,19 +13,25 @@ public protocol Parsable {
 
 public extension Parsable {
     func getRawText(from file: String) -> String {
+        file.url.rawText
+    }
+}
+
+fileprivate extension URL {
+    var rawText: String {
         do {
-            return try String(contentsOf: getURL(from: file), encoding: .utf8)
+            return try String(contentsOf: self, encoding: .utf8)
         } catch {
             fatalError(error.localizedDescription)
         }
     }
 }
 
-fileprivate extension Parsable {
-    func getURL(from file: String) -> URL {
-        if let url = Bundle.main.url(forResource: file, withExtension: ".txt") {
+fileprivate extension String {
+    var url: URL {
+        if let url = Bundle.main.url(forResource: self, withExtension: ".txt") {
             return url
         }
-        fatalError("Unable to get url for file: \(file)")
+        fatalError("Unable to get url for file: \(self)")
     }
 }
