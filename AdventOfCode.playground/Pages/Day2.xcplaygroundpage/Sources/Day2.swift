@@ -10,15 +10,11 @@ import Foundation
 public class Day2: Puzzle<Reports>, Solvable {
     override public var puzzleFile: String { #file }
 
-    private var reports: [[Int]] {
-        input.reports
-    }
-
     public func solvePartOne() -> Int {
-        reports.filter(\.isSafe).count
+        input.reports.filter(\.isSafe).count
     }
 
     public func solvePartTwo() -> Int {
-        reports.filter(\.couldBeSafe).count
+        input.reports.filter(\.couldBeSafe).count
     }
 }

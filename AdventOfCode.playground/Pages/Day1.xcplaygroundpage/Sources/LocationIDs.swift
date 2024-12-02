@@ -8,7 +8,6 @@
 import Foundation
 
 public struct LocationIDs: Parsable {
-    private(set) var count: Int = 0
     private(set) var left: [Int] = []
     private(set) var right: [Int] = []
 
@@ -16,7 +15,6 @@ public struct LocationIDs: Parsable {
         getRawText(from: file).components(separatedBy: "\n").forEach { line in
             let components = line.components(separatedBy: "   ")
             if let left = Int(components[0]), let right = Int(components[1]) {
-                self.count += 1
                 self.left.append(left)
                 self.right.append(right)
             }
