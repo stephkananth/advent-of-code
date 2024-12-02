@@ -1,6 +1,6 @@
 //
 //  Inputable.swift
-//  
+//
 //
 //  Created by Stephanie Ananth on 12/2/24.
 //
@@ -19,7 +19,9 @@ public extension Inputable {
             fatalError(error.localizedDescription)
         }
     }
+}
 
+fileprivate extension Inputable {
     func getURL(from file: String) -> URL {
         guard let url = Bundle.main.url(forResource: file, withExtension: ".txt") else {
             fatalError("Unable to get url for file: \(file)")
