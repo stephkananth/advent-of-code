@@ -7,18 +7,8 @@
 
 import Foundation
 
-public struct Day1: Solvable {
-    public let puzzleFile = #file
-    public let inputType: InputType
-
-    public private(set) var input: LocationIDs!
-
-    public init(_ inputType: InputType) {
-        self.inputType = inputType
-        defer {
-            self.input = LocationIDs(from: inputFile)
-        }
-    }
+public class Day1: Puzzle<LocationIDs>, Solvable {
+    override public var puzzleFile: String { #file }
 
     public func solvePartOne() -> Int {
         (0..<input.count).reduce(into: 0) { partialSum, i in
