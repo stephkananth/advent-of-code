@@ -16,9 +16,9 @@ let partTwoExampleSolution = 4
 
 let partTwoExampleResult = Day2(.example).solvePartTwo()
 
-//let partTwoResult = Day2(.puzzle).solvePartTwo()
+let partTwoResult = Day2(.puzzle).solvePartTwo()
 
-//print("part 2: \(partTwoResult)")
+print("part 2: \(partTwoResult)")
 
 struct Day2: Puzzlable {
     let puzzleFile = #file
@@ -33,7 +33,7 @@ struct Day2: Puzzlable {
     }
 
     func solvePartTwo() -> Int {
-        0
+        Reports(from: inputFile).reports.filter(\.couldBeSafe).count
     }
 }
 
@@ -68,5 +68,15 @@ fileprivate extension [Int] {
             }
         }
         return true
+    }
+
+    var couldBeSafe: Bool {
+        var copy = self
+        for i in (0..<count) {
+            copy.remove(at: i)
+            if copy.isSafe { return true }
+            copy = self
+        }
+        return false
     }
 }
