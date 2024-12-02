@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct LocationIDs: Inputable {
+public struct LocationIDs: Inputtable {
     private(set) var count: Int = 0
     private(set) var left: [Int] = []
     private(set) var right: [Int] = []

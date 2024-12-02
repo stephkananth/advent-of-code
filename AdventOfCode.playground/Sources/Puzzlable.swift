@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol Puzzlable {
-    associatedtype Input: Inputable
+    associatedtype Input: Inputtable
     associatedtype Output: Equatable
 
     var puzzleFile: String { get }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Reports: Inputable {
+public struct Reports: Inputtable {
     private(set) var reports = [[Int]]()
 
     public init(from file: String) {
