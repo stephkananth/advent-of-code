@@ -5,7 +5,7 @@
 //  Created by Stephanie Ananth on 12/1/24.
 //
 
-public struct Day1: Puzzle {
+public struct Day1: Puzzlable {
     public let puzzleFile = #file
     public private(set) var inputType: InputType
 

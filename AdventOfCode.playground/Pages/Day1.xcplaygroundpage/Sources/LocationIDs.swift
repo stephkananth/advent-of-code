@@ -7,18 +7,14 @@
 
 import Foundation
 
-public struct LocationIDs {
+public struct LocationIDs: Inputable {
     public private(set) var count: Int = 0
     public private(set) var left: [Int] = []
     public private(set) var right: [Int] = []
 
     public init(from file: String) {
-        guard let url = Bundle.main.url(forResource: file, withExtension: ".txt") else {
-            fatalError("Unable to get url for file: \(file)")
-        }
-
         do {
-            let rawText = try String(contentsOf: url, encoding: .utf8)
+            let rawText = try String(contentsOf: getURL(from: file), encoding: .utf8)
             let regex = /(?:(\d+)(?:\s{3})(\d+)(?:\n?))/
 
             rawText.matches(of: regex).forEach { match in
