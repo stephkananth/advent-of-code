@@ -11,8 +11,7 @@ public struct Reports: Parsable {
     private(set) var reports = [[Int]]()
 
     public init(from file: String) {
-        let rawText = getRawText(from: file)
-        reports = rawText.components(separatedBy: "\n")
+        reports = getRawText(from: file).components(separatedBy: "\n")
             .compactMap { rawReport in
                 rawReport.components(separatedBy: " ")
                     .compactMap { rawLevel in
