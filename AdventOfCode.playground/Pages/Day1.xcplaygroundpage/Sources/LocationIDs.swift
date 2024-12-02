@@ -13,11 +13,9 @@ public struct LocationIDs: Inputable {
     private(set) var right: [Int] = []
 
     public init(from file: String) {
-        let rawText = getRawText(from: file)
-        let regex = /(?:(\d+)(?:\s{3})(\d+)(?:\n?))/
-
-        rawText.matches(of: regex).forEach { match in
-            if let left = Int(match.1), let right = Int(match.2) {
+        getRawText(from: file).components(separatedBy: "\n").forEach { line in
+            let components = line.components(separatedBy: "   ")
+            if let left = Int(components[0]), let right = Int(components[1]) {
                 self.count += 1
                 self.left.append(left)
                 self.right.append(right)
