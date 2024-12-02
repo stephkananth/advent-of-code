@@ -4,6 +4,9 @@
 
 **/.DS_Store
 
+## Advent of code input
+*.txt
+
 ## User settings
 xcuserdata/
 
