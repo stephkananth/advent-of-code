@@ -24,6 +24,8 @@ extension [Int] {
     }
 
     var couldBeSafe: Bool {
+        if isSafe { return true }
+
         var copy = self
         for i in (0..<count) {
             copy.remove(at: i)
