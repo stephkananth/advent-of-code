@@ -14,7 +14,7 @@ open class Puzzle<Input: Parsable> {
 
     public private(set) var input: Input!
 
-    private let inputType: InputType
+    public let inputType: InputType
 
     private var inputFile: String {
         puzzleFile.getInputFile(for: inputType)
