@@ -11,10 +11,16 @@ public class Day3: Puzzle<Program>, Solvable {
     override public var puzzleFile: String { #file }
 
     public func solvePartOne() -> Int {
-        input.program.reduce(0) { $0 + $1[0] * $1[1] }
+        solve()
     }
 
     public func solvePartTwo() -> Int {
-        Day3Part2(inputType).solvePartTwo()
+        Day3Part2(inputType).solve()
+    }
+}
+
+fileprivate extension Puzzle where Input: Programmable {
+    func solve() -> Int {
+        input.program.reduce(0) { $0 + $1[0] * $1[1] }
     }
 }
