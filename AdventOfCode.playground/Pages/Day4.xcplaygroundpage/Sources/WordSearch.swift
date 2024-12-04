@@ -23,6 +23,6 @@ public struct WordSearch: Parsable {
         wordSearch = getRawText(from: file)
             .components(separatedBy: "\n")
             .map { Array($0) }
-            .compactMap { $0.isEmpty ? nil : $0 }
+            .filter { !$0.isEmpty }
     }
 }
