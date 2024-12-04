@@ -18,9 +18,3 @@ public class Day3: Puzzle<Program>, Solvable {
         Day3Part2(inputType).solve()
     }
 }
-
-fileprivate extension Puzzle where Input: Programmable {
-    func solve() -> Int {
-        input.program.reduce(0) { $0 + $1[0] * $1[1] }
-    }
-}
