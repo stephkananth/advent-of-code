@@ -15,9 +15,9 @@ extension [[Character]] {
     var columns: [String] {
         guard let first else { return [] }
         var columns = [String](repeating: "", count: first.count)
-        for rowIndex in 0..<count {
-            for columnIndex in 0..<self[rowIndex].count {
-                columns[columnIndex] += String(self[rowIndex][columnIndex])
+        for row in 0..<count {
+            for column in 0..<self[row].count {
+                columns[column] += String(self[row][column])
             }
         }
         return columns
@@ -29,11 +29,9 @@ extension [[Character]] {
             repeating: "",
             count: count + first.count - 1
         )
-        for rowIndex in 0..<count {
-            for columnIndex in 0..<self[rowIndex].count {
-                forwardDiagonals[rowIndex + columnIndex] += String(
-                    self[rowIndex][columnIndex]
-                )
+        for row in 0..<count {
+            for column in 0..<self[row].count {
+                forwardDiagonals[row + column] += String(self[row][column])
             }
         }
         return forwardDiagonals
@@ -45,10 +43,10 @@ extension [[Character]] {
             repeating: "",
             count: count + first.count - 1
         )
-        for rowIndex in 0..<count {
-            for columnIndex in 0..<self[rowIndex].count {
-                backwardDiagonals[rowIndex - columnIndex + count - 1] += String(
-                    self[rowIndex][columnIndex]
+        for row in 0..<count {
+            for column in 0..<self[row].count {
+                backwardDiagonals[row - column + count - 1] += String(
+                    self[row][column]
                 )
             }
         }
