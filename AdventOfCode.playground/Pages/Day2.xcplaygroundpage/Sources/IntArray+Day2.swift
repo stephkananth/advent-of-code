@@ -1,5 +1,5 @@
 //
-//  IntArray+Utilities.swift
+//  IntArray+Day2.swift
 //
 //
 //  Created by Stephanie Ananth on 12/2/24.
