@@ -1,6 +1,6 @@
 //
 //  WordSearch.swift
-//  
+//
 //
 //  Created by Stephanie Ananth on 12/4/24.
 //
@@ -8,7 +8,7 @@
 import Foundation
 
 public struct WordSearch: Parsable {
-    var wordSearch = [[Character]]()
+    private(set) var wordSearch = [[Character]]()
 
     var strings: [String] {
         var strings = [String]()
