@@ -57,17 +57,11 @@ extension [[Character]] {
 
     var xmasShapeCount: Int {
         guard let first else { return 0 }
+        let (rows, columns) = (count, first.count)
 
-        let rows = count
-        let columns = first.count
-
-        guard rows > 2, columns > 2 else { return 0 }
-
-        var xmasShapeCount = 0
-
-        for row in 0..<(rows - 2) {
-            for column in 0..<(columns - 2) {
-                if [
+        return (0..<(rows - 2)).reduce(0) { partialResult, row in
+            partialResult + (0..<(columns - 2)).filter { column in
+                [
                     [
                         self[row][column],
                         self[row][column + 1],
@@ -83,13 +77,9 @@ extension [[Character]] {
                         self[row + 2][column + 1],
                         self[row + 2][column + 2]
                     ]
-                ].isXmasShape {
-                    xmasShapeCount += 1
-                }
-            }
+                ].isXmasShape
+            }.count
         }
-
-        return xmasShapeCount
     }
 
     private var isXmasShape: Bool {
