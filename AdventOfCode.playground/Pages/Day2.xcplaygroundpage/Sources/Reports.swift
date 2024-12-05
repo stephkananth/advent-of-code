@@ -8,7 +8,7 @@
 import Foundation
 
 public struct Reports: Parsable {
-    private(set) var reports = [[Int]]()
+    private(set) var reports: [[Int]] = []
 
     public init(from file: String) {
         reports = getRawText(from: file).components(separatedBy: "\n")

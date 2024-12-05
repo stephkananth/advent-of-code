@@ -8,10 +8,10 @@
 import Foundation
 
 public struct WordSearch: Parsable {
-    private(set) var wordSearch = [[Character]]()
+    private(set) var wordSearch: [[Character]] = []
 
     var strings: [String] {
-        var strings = [String]()
+        var strings: [String] = []
         strings.append(contentsOf: wordSearch.rows)
         strings.append(contentsOf: wordSearch.columns)
         strings.append(contentsOf: wordSearch.forwardDiagonals)

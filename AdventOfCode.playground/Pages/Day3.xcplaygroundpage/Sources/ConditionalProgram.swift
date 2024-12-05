@@ -8,7 +8,7 @@
 import Foundation
 
 public struct ConditionalProgram: Parsable, Programmable {
-    public private(set) var program = [[Int]]()
+    public private(set) var program: [[Int]] = []
 
     public init(from file: String) {
         program = getRawText(from: file)
