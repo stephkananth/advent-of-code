@@ -26,11 +26,14 @@ extension Map {
         return move()
     }
 
-    mutating func isLoop() -> Bool {
+    mutating func isLoop() -> Bool? {
         let (currRow, currColumn) = currentIndex
         let (nextRow, nextColumn) = nextIndex
 
         switch (currentPosition, nextPosition) {
+        case (_, nil):
+            return false
+
         case (.obstacle, _):
             fatalError("Current position cannot be obstacle")
 
@@ -39,9 +42,6 @@ extension Map {
 
         case (_, .current):
             fatalError("Next position cannot be current")
-
-        case (_, nil):
-            return false
 
         case let (.current(currDirection), .obstacle):
             map[currRow][currColumn] = .visited(seen: [currDirection], direction: currDirection.turn())
@@ -80,7 +80,7 @@ extension Map {
             currentIndex = (nextRow, nextColumn)
         }
 
-        return isLoop()
+        return nil
     }
 }
 

@@ -23,7 +23,11 @@ public class Day6: Puzzle<Map>, Solvable {
                 if case .unvisited = map[row][column] {
                     var copy = Map(map)
                     copy.map[row][column] = .obstacle
-                    if copy.isLoop() {
+                    var isLoop: Bool? = nil
+                    while isLoop == nil {
+                        isLoop = copy.isLoop()
+                    }
+                    if isLoop == true {
                         result += 1
                     }
                     map = input.map
