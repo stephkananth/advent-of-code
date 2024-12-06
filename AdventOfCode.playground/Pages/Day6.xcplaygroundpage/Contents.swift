@@ -8,13 +8,13 @@ print("------")
 
 // MARK: - Part 1
 
-let partOneExampleSolution = 143
+let partOneExampleSolution = 41
 
 let partOneExampleResult = example.solvePartOne()
 
-//let partOneResult = puzzle.solvePartOne()
+let partOneResult = puzzle.solvePartOne()
 
-//print("Part 1: \(partOneResult)")
+print("Part 1: \(partOneResult)")
 
 // MARK: - Part 2
 
@@ -30,8 +30,8 @@ class Day6: Puzzle<Map>, Solvable {
     override public var puzzleFile: String { #file }
 
     func solvePartOne() -> Int {
-        input.map.forEach { print($0) }
-        return 0
+        var map = input.map
+        return map.move()
     }
 
     func solvePartTwo() -> Int {
@@ -51,6 +51,7 @@ struct Map: Parsable {
             Array($0)
                 .compactMap(\.position)
         }
+        .filter { !$0.isEmpty }
     }
 }
 
@@ -60,11 +61,22 @@ extension Character {
     }
 }
 
-enum Position {
+enum Position: Equatable {
     case current(Direction)
     case notVisited
     case obstacle
     case visited
+
+    var isVisited: Bool {
+        switch self {
+        case .current, .visited: true
+        default: false
+        }
+    }
+
+    var isObstacle: Bool {
+        self == .obstacle
+    }
 
     init?(_ c: Character) {
         switch c {
@@ -97,14 +109,122 @@ enum Direction: String, CaseIterable {
     case down = "v"
     case left = "<"
 
-    @discardableResult
-    mutating func turn() -> Direction {
+    var position: Position {
+        .current(self)
+    }
+
+    func turn() -> Direction {
         switch self {
-        case .up: self = .right
-        case .right: self = .down
-        case .down: self = .left
-        case .left: self = .up
+        case .up: .right
+        case .right: .down
+        case .down: .left
+        case .left: .up
         }
-        return self
+    }
+}
+
+extension [[Position]] {
+    mutating func move() -> Int {
+        guard let nextPosition else { return visitedCount }
+
+        let (currRow, currColumn) = currentIndex
+        let direction = currentDirection
+
+        if nextPosition.isObstacle {
+            self[currRow][currColumn] = .current(direction.turn())
+        } else {
+            let (nextRow, nextColumn) = nextIndex
+            self[nextRow][nextColumn] = .current(direction)
+            self[currRow][currColumn] = .visited
+        }
+
+        return move()
+    }
+
+    var nextPosition: Position? {
+        guard !isOutOfBounds(index: nextIndex) else {
+            return nil
+        }
+
+        let (row, column) = nextIndex
+        return self[row][column]
+    }
+
+    var nextIndex: (row: Index, column: Index) {
+        var (row, column) = currentIndex
+        switch currentDirection {
+        case .up:
+            return (row - 1, column)
+        case .right:
+            return (row, column + 1)
+        case .down:
+            return (row + 1, column)
+        case .left:
+            return (row, column - 1)
+        }
+    }
+
+    func isOutOfBounds(index: (row: Index, column: Index)) -> Bool {
+        index.row < minRow ||
+        index.row > maxRow ||
+        index.column < minColumn ||
+        index.column > maxColumn
+    }
+
+    var maxRow: Int {
+        count - 1
+    }
+
+    var maxColumn: Int {
+        (first?.count ?? 0) - 1
+    }
+
+    var minRow: Int {
+        0
+    }
+
+    var minColumn: Int {
+        0
+    }
+
+    var currentDirection: Direction {
+        let (row, column) = currentIndex
+        if case .current(let direction) = self[row][column] {
+            return direction
+        }
+        fatalError("Could not find current direction")
+    }
+
+    var currentIndex: (row: Index, column: Index) {
+        firstIndex(of: Direction.allCases.map(\.position))
+    }
+
+    func firstIndex(of positions: [Position]) -> (row: Index, column: Index) {
+        for row in 0..<count {
+            for column in 0..<self[row].count {
+                if positions.contains(self[row][column]) {
+                    return (row: row, column: column)
+                }
+            }
+        }
+        fatalError("Could not find first index of positions: \(positions)")
+    }
+
+    var visitedCount: Int {
+        map(\.visitedCount).reduce(0, +)
+    }
+
+    var maxVisited: Int {
+        map(\.count).reduce(0, +) - map(\.obstacleCount).reduce(0, +)
+    }
+}
+
+extension [Position] {
+    var visitedCount: Int {
+        filter(\.isVisited).count
+    }
+
+    var obstacleCount: Int {
+        filter(\.isObstacle).count
     }
 }
