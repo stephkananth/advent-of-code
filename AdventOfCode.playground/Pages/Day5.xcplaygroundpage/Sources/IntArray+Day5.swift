@@ -14,19 +14,15 @@ extension [Int] {
 
     func isInOrder(rules: [Int: (before: Set<Int>, after: Set<Int>)]) -> Bool {
         for (index, value) in enumerated() {
-            if let rule = rules[value] {
-                let afterValues = rule.after
-                for beforeIndex in 0..<index {
-                    if afterValues.contains(self[beforeIndex]) {
-                        return false
-                    }
+            for beforeIndex in 0..<index {
+                if rules[value]?.after.contains(self[beforeIndex]) == true {
+                    return false
                 }
+            }
 
-                let beforeValues = rule.before
-                for afterIndex in (index + 1)..<count {
-                    if beforeValues.contains(self[afterIndex]) {
-                        return false
-                    }
+            for afterIndex in (index + 1)..<count {
+                if rules[value]?.before.contains(self[afterIndex]) == true {
+                    return false
                 }
             }
         }

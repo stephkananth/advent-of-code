@@ -11,9 +11,10 @@ public class Day5: Puzzle<PrintQueue>, Solvable {
     override public var puzzleFile: String { #file }
 
     public func solvePartOne() -> Int {
-        input.updates.reduce(0) {
-            $0 + ($1.isInOrder(rules: input.rules) ? $1.middleNumber : 0)
-        }
+        input.updates
+            .filter { $0.isInOrder(rules: input.rules) }
+            .map(\.middleNumber)
+            .reduce(0, +)
     }
 
     public func solvePartTwo() -> Int {
