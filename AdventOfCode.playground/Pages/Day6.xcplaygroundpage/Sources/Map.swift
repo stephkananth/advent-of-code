@@ -109,7 +109,7 @@ public struct Map: Parsable {
             map[currRow][currColumn] = .current(direction.turn())
         } else {
             let (nextRow, nextColumn) = nextIndex
-            map[currRow][currColumn] = .visited(seen: [], direction: nil)
+            map[currRow][currColumn] = .visited()
             map[nextRow][nextColumn] = .current(direction)
             currentIndex = (nextRow, nextColumn)
         }
@@ -138,13 +138,13 @@ public struct Map: Parsable {
             map[currRow][currColumn] = .visited(seen: [currDirection], direction: currDirection.turn())
 
         case let (.current(currDirection), .unvisited):
-            map[currRow][currColumn] = .visited(seen: [currDirection], direction: nil)
-            map[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
+            map[currRow][currColumn] = .visited(seen: [currDirection])
+            map[nextRow][nextColumn] = .visited(direction: currDirection)
             currentIndex = (nextRow, nextColumn)
 
         case let (.current(currDirection), .visited(seen: nextSeen, _)):
             if nextSeen.contains(currDirection) { return true }
-            map[currRow][currColumn] = .visited(seen: [currDirection], direction: nil)
+            map[currRow][currColumn] = .visited(seen: [currDirection])
             map[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
             currentIndex = (nextRow, nextColumn)
 
@@ -158,12 +158,12 @@ public struct Map: Parsable {
                 map[currRow][currColumn] = .visited(seen: currSeen, direction: currDirection.turn())
 
             case .unvisited:
-                map[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
-                map[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
+                map[currRow][currColumn] = .visited(seen: currSeen)
+                map[nextRow][nextColumn] = .visited(direction: currDirection)
                 currentIndex = (nextRow, nextColumn)
 
             case .visited(seen: let nextSeen, _):
-                map[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
+                map[currRow][currColumn] = .visited(seen: currSeen)
                 map[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
                 currentIndex = (nextRow, nextColumn)
 
