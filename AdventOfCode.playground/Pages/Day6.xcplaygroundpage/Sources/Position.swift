@@ -11,7 +11,7 @@ enum Position: Equatable {
     case current(Direction)
     case notVisited
     case obstacle
-    case visited
+    case visited(Set<Direction>)
 
     var isVisited: Bool {
         switch self {
@@ -32,7 +32,7 @@ enum Position: Equatable {
         case "<": self = .current(.left)
         case ".": self = .notVisited
         case "#": self = .obstacle
-        case "X": self = .visited
+        case "X": self = .visited([])
         default: return nil
         }
     }

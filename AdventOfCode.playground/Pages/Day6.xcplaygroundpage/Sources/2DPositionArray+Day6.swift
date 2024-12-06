@@ -19,7 +19,7 @@ extension [[Position]] {
         } else {
             let (nextRow, nextColumn) = nextIndex
             self[nextRow][nextColumn] = .current(direction)
-            self[currRow][currColumn] = .visited
+            self[currRow][currColumn] = .visited([])
         }
 
         return move()

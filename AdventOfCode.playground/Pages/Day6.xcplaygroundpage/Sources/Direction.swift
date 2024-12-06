@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Direction: String, CaseIterable {
+enum Direction: String, CaseIterable, Hashable {
     case up = "^"
     case right = ">"
     case down = "v"
