@@ -13,6 +13,6 @@ struct Rule: Comparable, Identifiable {
     let after: Set<Int>
 
     static func < (lhs: Rule, rhs: Rule) -> Bool {
-        lhs.after.contains(rhs.id)
+        lhs.after.contains(rhs.id) || rhs.before.contains(lhs.id)
     }
 }
