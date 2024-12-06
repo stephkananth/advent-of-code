@@ -148,27 +148,28 @@ public struct Map: Parsable {
             map[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
             currentIndex = (nextRow, nextColumn)
 
-        case (.visited(seen: var currSeen, direction: let currDirection), .obstacle):
+        case (.visited(seen: var currSeen, direction: let currDirection), _):
             guard let currDirection else { fatalError("Current direction should not be nil") }
             if currSeen.contains(currDirection) { return true }
             currSeen.insert(currDirection)
-            map[currRow][currColumn] = .visited(seen: currSeen, direction: currDirection.turn())
 
-        case (.visited(seen: var currSeen, direction: let currDirection), .unvisited):
-            guard let currDirection else { fatalError("Current direction should not be nil") }
-            if currSeen.contains(currDirection) { return true }
-            currSeen.insert(currDirection)
-            map[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
-            map[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
-            currentIndex = (nextRow, nextColumn)
+            switch nextPosition {
+            case .obstacle:
+                map[currRow][currColumn] = .visited(seen: currSeen, direction: currDirection.turn())
 
-        case (.visited(seen: var currSeen, direction: let currDirection), .visited(seen: let nextSeen, _)):
-            guard let currDirection else { fatalError("Current direction should not be nil") }
-            if currSeen.contains(currDirection) || nextSeen.contains(currDirection) { return true }
-            currSeen.insert(currDirection)
-            map[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
-            map[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
-            currentIndex = (nextRow, nextColumn)
+            case .unvisited:
+                map[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
+                map[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
+                currentIndex = (nextRow, nextColumn)
+
+            case .visited(seen: let nextSeen, _):
+                map[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
+                map[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
+                currentIndex = (nextRow, nextColumn)
+
+            default:
+                fatalError("Unknown value for next position: \(String(describing: nextPosition))")
+            }
         }
 
         return nil
