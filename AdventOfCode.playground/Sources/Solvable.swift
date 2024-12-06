@@ -8,8 +8,6 @@
 import Foundation
 
 public protocol Solvable {
-    associatedtype Output: Equatable
-
-    func solvePartOne() -> Output
-    func solvePartTwo() -> Output
+    func solvePartOne() -> Int
+    func solvePartTwo() -> Int
 }
