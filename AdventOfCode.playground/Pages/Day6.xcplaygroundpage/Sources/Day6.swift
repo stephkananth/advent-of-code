@@ -17,11 +17,10 @@ public class Day6: Puzzle<Map>, Solvable {
 
     public func solvePartTwo() -> Int {
         var result = 0
-        var map = input.map
-        for row in 0..<map.count {
-            for column in 0..<map[row].count {
-                if case .unvisited = map[row][column] {
-                    var copy = Map(map)
+        (0..<input.map.count).forEach { row in
+            (0..<input.map[row].count).forEach { column in
+                if case .unvisited = input.map[row][column] {
+                    var copy = Map(input.map)
                     copy.map[row][column] = .obstacle
                     var isLoop: Bool? = nil
                     while isLoop == nil {
@@ -30,7 +29,6 @@ public class Day6: Puzzle<Map>, Solvable {
                     if isLoop == true {
                         result += 1
                     }
-                    map = input.map
                 }
             }
         }
