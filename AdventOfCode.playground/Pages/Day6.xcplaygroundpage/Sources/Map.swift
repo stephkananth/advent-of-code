@@ -10,6 +10,10 @@ import Foundation
 public struct Map: Parsable {
     var map: [[Position]] = []
 
+    lazy var currentIndex: (row: Int, column: Int) = {
+        firstIndex(of: Direction.allCases.map(\.position))
+    }()
+
     public init(from file: String) {
         map = Array(
             getRawText(from: file)

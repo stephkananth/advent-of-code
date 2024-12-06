@@ -19,6 +19,7 @@ extension Map {
         } else {
             let (nextRow, nextColumn) = nextIndex
             map[nextRow][nextColumn] = .current(direction)
+            currentIndex = (nextRow, nextColumn)
             map[currRow][currColumn] = .visited(seen: [], direction: nil)
         }
 
@@ -48,11 +49,13 @@ extension Map {
         case let (.current(currDirection), .unvisited):
             map[currRow][currColumn] = .visited(seen: [currDirection], direction: nil)
             map[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
+            currentIndex = (nextRow, nextColumn)
 
         case let (.current(currDirection), .visited(seen: nextSeen, _)):
             if nextSeen.contains(currDirection) { return true }
             map[currRow][currColumn] = .visited(seen: [currDirection], direction: nil)
             map[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
+            currentIndex = (nextRow, nextColumn)
 
         case (.visited(seen: var currSeen, direction: let currDirection), .obstacle):
             guard let currDirection else { fatalError("Current direction should not be nil") }
@@ -66,6 +69,7 @@ extension Map {
             currSeen.insert(currDirection)
             map[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
             map[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
+            currentIndex = (nextRow, nextColumn)
 
         case (.visited(seen: var currSeen, direction: let currDirection), .visited(seen: let nextSeen, _)):
             guard let currDirection else { fatalError("Current direction should not be nil") }
@@ -73,6 +77,7 @@ extension Map {
             currSeen.insert(currDirection)
             map[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
             map[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
+            currentIndex = (nextRow, nextColumn)
         }
 
         return isLoop()
@@ -95,49 +100,53 @@ extension Map {
         map.map(\.visitedCount).reduce(0, +)
     }
 
-    var currentIndex: (row: Int, column: Int) {
-        firstIndex(of: Direction.allCases.map(\.position))
-    }
-
     var currentPosition: Position {
-        let (row, column) = currentIndex
-        return map[row][column]
+        mutating get {
+            let (row, column) = currentIndex
+            return map[row][column]
+        }
     }
 
     var currentDirection: Direction {
-        switch currentPosition {
-        case .current(let direction):
-            return direction
-        case .visited(_, let direction):
-            guard let direction else {
+        mutating get {
+            switch currentPosition {
+            case .current(let direction):
+                return direction
+            case .visited(_, let direction):
+                guard let direction else {
+                    fatalError("Could not find current direction")
+                }
+                return direction
+            default:
                 fatalError("Could not find current direction")
             }
-            return direction
-        default:
-            fatalError("Could not find current direction")
         }
     }
 
     var nextIndex: (row: Int, column: Int) {
-        let (row, column) = currentIndex
-        switch currentDirection {
-        case .up:
-            return (row - 1, column)
-        case .right:
-            return (row, column + 1)
-        case .down:
-            return (row + 1, column)
-        case .left:
-            return (row, column - 1)
+        mutating get {
+            let (row, column) = currentIndex
+            switch currentDirection {
+            case .up:
+                return (row - 1, column)
+            case .right:
+                return (row, column + 1)
+            case .down:
+                return (row + 1, column)
+            case .left:
+                return (row, column - 1)
+            }
         }
     }
 
     var nextPosition: Position? {
-        let nextIndex = nextIndex
-        guard !isOutOfBounds(index: nextIndex) else {
-            return nil
+        mutating get {
+            let nextIndex = nextIndex
+            guard !isOutOfBounds(index: nextIndex) else {
+                return nil
+            }
+            return map[nextIndex.row][nextIndex.column]
         }
-        return map[nextIndex.row][nextIndex.column]
     }
 
     // MARK: Functions
