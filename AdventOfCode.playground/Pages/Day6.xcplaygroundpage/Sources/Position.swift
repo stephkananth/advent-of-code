@@ -9,9 +9,9 @@ import Foundation
 
 enum Position: Equatable {
     case current(Direction)
-    case notVisited
     case obstacle
-    case visited(Set<Direction>)
+    case unvisited
+    case visited(seen: Set<Direction>, direction: Direction?)
 
     var isVisited: Bool {
         switch self {
@@ -30,9 +30,9 @@ enum Position: Equatable {
         case ">": self = .current(.right)
         case "v": self = .current(.down)
         case "<": self = .current(.left)
-        case ".": self = .notVisited
         case "#": self = .obstacle
-        case "X": self = .visited([])
+        case ".": self = .unvisited
+        case "X": self = .visited(seen: [], direction: nil)
         default: return nil
         }
     }
@@ -42,8 +42,8 @@ extension Position: CustomStringConvertible {
     var description: String {
         switch self {
         case .current(let direction): direction.rawValue
-        case .notVisited: "."
         case .obstacle: "#"
+        case .unvisited: "."
         case .visited: "X"
         }
     }

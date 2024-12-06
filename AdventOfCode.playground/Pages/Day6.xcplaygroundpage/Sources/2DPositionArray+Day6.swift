@@ -19,10 +19,68 @@ extension [[Position]] {
         } else {
             let (nextRow, nextColumn) = nextIndex
             self[nextRow][nextColumn] = .current(direction)
-            self[currRow][currColumn] = .visited([])
+            self[currRow][currColumn] = .visited(seen: [], direction: nil)
         }
 
         return move()
+    }
+
+    mutating func isLoop() -> Bool {
+        let (currRow, currColumn) = currentIndex
+        let (nextRow, nextColumn) = nextIndex
+
+        switch (currentPosition, nextPosition) {
+
+            // MARK: Errors
+
+        case (.obstacle, _):
+            fatalError("Current position cannot be obstacle")
+
+        case (.unvisited, _):
+            fatalError("Current position cannot be unvisited")
+
+        case (_, .current):
+            fatalError("Next position cannot be current")
+
+            // MARK: Successes
+
+        case (_, nil):
+            return false
+
+        case let (.current(currDirection), .obstacle):
+            self[currRow][currColumn] = .visited(seen: [currDirection], direction: currDirection.turn())
+
+        case let (.current(currDirection), .unvisited):
+            self[currRow][currColumn] = .visited(seen: [currDirection], direction: nil)
+            self[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
+
+        case let (.current(currDirection), .visited(seen: nextSeen, _)):
+            if nextSeen.contains(currDirection) { return true }
+            self[currRow][currColumn] = .visited(seen: [currDirection], direction: nil)
+            self[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
+
+        case (.visited(seen: var currSeen, direction: let currDirection), .obstacle):
+            guard let currDirection else { fatalError("Current direction should not be nil") }
+            if currSeen.contains(currDirection) { return true }
+            currSeen.insert(currDirection)
+            self[currRow][currColumn] = .visited(seen: currSeen, direction: currDirection.turn())
+
+        case (.visited(seen: var currSeen, direction: let currDirection), .unvisited):
+            guard let currDirection else { fatalError("Current direction should not be nil") }
+            if currSeen.contains(currDirection) { return true }
+            currSeen.insert(currDirection)
+            self[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
+            self[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
+
+        case (.visited(seen: var currSeen, direction: let currDirection), .visited(seen: let nextSeen, _)):
+            guard let currDirection else { fatalError("Current direction should not be nil") }
+            if currSeen.contains(currDirection) || nextSeen.contains(currDirection) { return true }
+            currSeen.insert(currDirection)
+            self[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
+            self[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
+        }
+
+        return isLoop()
     }
 }
 
@@ -46,12 +104,23 @@ fileprivate extension [[Position]] {
         firstIndex(of: Direction.allCases.map(\.position))
     }
 
-    private var currentDirection: Direction {
+    private var currentPosition: Position {
         let (row, column) = currentIndex
-        if case .current(let direction) = self[row][column] {
+        return self[row][column]
+    }
+
+    private var currentDirection: Direction {
+        switch currentPosition {
+        case .current(let direction):
             return direction
+        case .visited(_, let direction):
+            guard let direction else {
+                fatalError("Could not find current direction")
+            }
+            return direction
+        default:
+            fatalError("Could not find current direction")
         }
-        fatalError("Could not find current direction")
     }
 
     private var nextIndex: (row: Index, column: Index) {
@@ -81,7 +150,11 @@ fileprivate extension [[Position]] {
     private func firstIndex(of positions: [Position]) -> (row: Index, column: Index) {
         for row in 0..<count {
             for column in 0..<self[row].count {
-                if positions.contains(self[row][column]) {
+                let position = self[row][column]
+                if case .visited(_, let currDirection) = position, currDirection != nil {
+                    return (row: row, column: column)
+                }
+                if positions.contains(position) {
                     return (row: row, column: column)
                 }
             }

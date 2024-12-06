@@ -12,9 +12,9 @@ let partOneExampleSolution = 41
 
 let partOneExampleResult = example.solvePartOne()
 
-let partOneResult = puzzle.solvePartOne()
+//let partOneResult = puzzle.solvePartOne()
 
-print("Part 1: \(partOneResult)")
+//print("Part 1: \(partOneResult)")
 
 // MARK: - Part 2
 
