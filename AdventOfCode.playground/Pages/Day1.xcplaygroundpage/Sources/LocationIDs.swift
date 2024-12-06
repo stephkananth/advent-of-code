@@ -12,13 +12,15 @@ public struct LocationIDs: Parsable {
     private(set) var right: [Int] = []
 
     public init(from file: String) {
-        getRawText(from: file).components(separatedBy: "\n").forEach { line in
-            let components = line.components(separatedBy: "   ")
-            if let left = Int(components[0]), let right = Int(components[1]) {
-                self.left.append(left)
-                self.right.append(right)
+        getRawText(from: file)
+            .components(separatedBy: "\n")
+            .forEach { line in
+                let components = line.components(separatedBy: "   ")
+                if let left = Int(components[0]), let right = Int(components[1]) {
+                    self.left.append(left)
+                    self.right.append(right)
+                }
             }
-        }
 
         left.sort()
         right.sort()

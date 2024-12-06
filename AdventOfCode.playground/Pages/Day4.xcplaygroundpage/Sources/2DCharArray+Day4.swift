@@ -57,27 +57,28 @@ extension [[Character]] {
         guard let first else { return 0 }
         let (rows, columns) = (count, first.count)
 
-        return (0..<(rows - 2)).reduce(0) { partialResult, row in
-            partialResult + (0..<(columns - 2)).filter { column in
-                [
+        return (0..<(rows - 2))
+            .reduce(0) { partialResult, row in
+                partialResult + (0..<(columns - 2)).filter { column in
                     [
-                        self[row][column],
-                        self[row][column + 1],
-                        self[row][column + 2]
-                    ],
-                    [
-                        self[row + 1][column],
-                        self[row + 1][column + 1],
-                        self[row + 1][column + 2]
-                    ],
-                    [
-                        self[row + 2][column],
-                        self[row + 2][column + 1],
-                        self[row + 2][column + 2]
-                    ]
-                ].isXmasShape
-            }.count
-        }
+                        [
+                            self[row][column],
+                            self[row][column + 1],
+                            self[row][column + 2]
+                        ],
+                        [
+                            self[row + 1][column],
+                            self[row + 1][column + 1],
+                            self[row + 1][column + 2]
+                        ],
+                        [
+                            self[row + 2][column],
+                            self[row + 2][column + 1],
+                            self[row + 2][column + 2]
+                        ]
+                    ].isXmasShape
+                }.count
+            }
     }
 
     private var isXmasShape: Bool {
