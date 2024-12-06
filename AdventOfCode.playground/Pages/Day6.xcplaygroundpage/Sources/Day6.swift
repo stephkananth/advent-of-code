@@ -11,8 +11,8 @@ public class Day6: Puzzle<Map>, Solvable {
     override public var puzzleFile: String { #file }
 
     public func solvePartOne() -> Int {
-        var map = input.map
-        return map.move()
+        guard var input else { fatalError("Input should not be nil") }
+        return input.move()
     }
 
     public func solvePartTwo() -> Int {
@@ -21,10 +21,9 @@ public class Day6: Puzzle<Map>, Solvable {
         for row in 0..<map.count {
             for column in 0..<map[row].count {
                 if case .unvisited = map[row][column] {
-                    map[row][column] = .obstacle
-                    if map.isLoop() {
-                        print()
-                        map.forEach { print($0) }
+                    var copy = Map(map)
+                    copy.map[row][column] = .obstacle
+                    if copy.isLoop() {
                         result += 1
                     }
                     map = input.map

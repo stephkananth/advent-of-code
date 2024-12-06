@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension [[Position]] {
+extension Map {
     mutating func move() -> Int {
         guard let nextPosition else { return visitedCount }
 
@@ -15,11 +15,11 @@ extension [[Position]] {
         let direction = currentDirection
 
         if nextPosition.isObstacle {
-            self[currRow][currColumn] = .current(direction.turn())
+            map[currRow][currColumn] = .current(direction.turn())
         } else {
             let (nextRow, nextColumn) = nextIndex
-            self[nextRow][nextColumn] = .current(direction)
-            self[currRow][currColumn] = .visited(seen: [], direction: nil)
+            map[nextRow][nextColumn] = .current(direction)
+            map[currRow][currColumn] = .visited(seen: [], direction: nil)
         }
 
         return move()
@@ -30,9 +30,6 @@ extension [[Position]] {
         let (nextRow, nextColumn) = nextIndex
 
         switch (currentPosition, nextPosition) {
-
-            // MARK: Errors
-
         case (.obstacle, _):
             fatalError("Current position cannot be obstacle")
 
@@ -42,74 +39,72 @@ extension [[Position]] {
         case (_, .current):
             fatalError("Next position cannot be current")
 
-            // MARK: Successes
-
         case (_, nil):
             return false
 
         case let (.current(currDirection), .obstacle):
-            self[currRow][currColumn] = .visited(seen: [currDirection], direction: currDirection.turn())
+            map[currRow][currColumn] = .visited(seen: [currDirection], direction: currDirection.turn())
 
         case let (.current(currDirection), .unvisited):
-            self[currRow][currColumn] = .visited(seen: [currDirection], direction: nil)
-            self[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
+            map[currRow][currColumn] = .visited(seen: [currDirection], direction: nil)
+            map[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
 
         case let (.current(currDirection), .visited(seen: nextSeen, _)):
             if nextSeen.contains(currDirection) { return true }
-            self[currRow][currColumn] = .visited(seen: [currDirection], direction: nil)
-            self[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
+            map[currRow][currColumn] = .visited(seen: [currDirection], direction: nil)
+            map[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
 
         case (.visited(seen: var currSeen, direction: let currDirection), .obstacle):
             guard let currDirection else { fatalError("Current direction should not be nil") }
             if currSeen.contains(currDirection) { return true }
             currSeen.insert(currDirection)
-            self[currRow][currColumn] = .visited(seen: currSeen, direction: currDirection.turn())
+            map[currRow][currColumn] = .visited(seen: currSeen, direction: currDirection.turn())
 
         case (.visited(seen: var currSeen, direction: let currDirection), .unvisited):
             guard let currDirection else { fatalError("Current direction should not be nil") }
             if currSeen.contains(currDirection) { return true }
             currSeen.insert(currDirection)
-            self[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
-            self[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
+            map[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
+            map[nextRow][nextColumn] = .visited(seen: [], direction: currDirection)
 
         case (.visited(seen: var currSeen, direction: let currDirection), .visited(seen: let nextSeen, _)):
             guard let currDirection else { fatalError("Current direction should not be nil") }
             if currSeen.contains(currDirection) || nextSeen.contains(currDirection) { return true }
             currSeen.insert(currDirection)
-            self[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
-            self[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
+            map[currRow][currColumn] = .visited(seen: currSeen, direction: nil)
+            map[nextRow][nextColumn] = .visited(seen: nextSeen, direction: currDirection)
         }
 
         return isLoop()
     }
 }
 
-fileprivate extension [[Position]] {
+extension Map {
 
     // MARK: Variables
 
-    private var maxRow: Int {
-        count - 1
+    var maxRow: Int {
+        map.count - 1
     }
 
-    private var maxColumn: Int {
-        (first?.count ?? 0) - 1
+    var maxColumn: Int {
+        (map.first?.count ?? 0) - 1
     }
 
-    private var visitedCount: Int {
-        map(\.visitedCount).reduce(0, +)
+    var visitedCount: Int {
+        map.map(\.visitedCount).reduce(0, +)
     }
 
-    private var currentIndex: (row: Index, column: Index) {
+    var currentIndex: (row: Int, column: Int) {
         firstIndex(of: Direction.allCases.map(\.position))
     }
 
-    private var currentPosition: Position {
+    var currentPosition: Position {
         let (row, column) = currentIndex
-        return self[row][column]
+        return map[row][column]
     }
 
-    private var currentDirection: Direction {
+    var currentDirection: Direction {
         switch currentPosition {
         case .current(let direction):
             return direction
@@ -123,7 +118,7 @@ fileprivate extension [[Position]] {
         }
     }
 
-    private var nextIndex: (row: Index, column: Index) {
+    var nextIndex: (row: Int, column: Int) {
         let (row, column) = currentIndex
         switch currentDirection {
         case .up:
@@ -137,20 +132,20 @@ fileprivate extension [[Position]] {
         }
     }
 
-    private var nextPosition: Position? {
+    var nextPosition: Position? {
         let nextIndex = nextIndex
         guard !isOutOfBounds(index: nextIndex) else {
             return nil
         }
-        return self[nextIndex.row][nextIndex.column]
+        return map[nextIndex.row][nextIndex.column]
     }
 
     // MARK: Functions
 
-    private func firstIndex(of positions: [Position]) -> (row: Index, column: Index) {
-        for row in 0..<count {
-            for column in 0..<self[row].count {
-                let position = self[row][column]
+    func firstIndex(of positions: [Position]) -> (row: Int, column: Int) {
+        for row in 0..<map.count {
+            for column in 0..<map[row].count {
+                let position = map[row][column]
                 if case .visited(_, let currDirection) = position, currDirection != nil {
                     return (row: row, column: column)
                 }
@@ -162,7 +157,7 @@ fileprivate extension [[Position]] {
         fatalError("Could not find first index of positions: \(positions)")
     }
 
-    private func isOutOfBounds(index: (row: Index, column: Index)) -> Bool {
+    func isOutOfBounds(index: (row: Int, column: Int)) -> Bool {
         index.row < 0 ||
         index.row > maxRow ||
         index.column < 0 ||

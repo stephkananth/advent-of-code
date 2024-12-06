@@ -1,6 +1,6 @@
 //
 //  Map.swift
-//  
+//
 //
 //  Created by Stephanie Ananth on 12/6/24.
 //
@@ -8,7 +8,7 @@
 import Foundation
 
 public struct Map: Parsable {
-    private(set) var map: [[Position]] = []
+    var map: [[Position]] = []
 
     public init(from file: String) {
         map = Array(
@@ -20,5 +20,9 @@ public struct Map: Parsable {
                 .compactMap(\.position)
         }
         .filter { !$0.isEmpty }
+    }
+
+    init(_ map: [[Position]]) {
+        self.map = map
     }
 }
