@@ -14,9 +14,9 @@ public struct LocationIDs: Parsable {
     public init(from file: String) {
         getRawText(from: file)
             .components(separatedBy: "\n")
-            .forEach { line in
-                let components = line.components(separatedBy: "   ")
-                if let left = Int(components[0]), let right = Int(components[1]) {
+            .forEach {
+                let line = $0.components(separatedBy: "   ")
+                if let left = Int(line[0]), let right = Int(line[1]) {
                     self.left.append(left)
                     self.right.append(right)
                 }
