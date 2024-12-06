@@ -58,7 +58,6 @@ public struct Map: Parsable {
 
     private var nextPosition: Position? {
         mutating get {
-            let nextIndex = nextIndex
             guard !isOutOfBounds(index: nextIndex) else {
                 return nil
             }
