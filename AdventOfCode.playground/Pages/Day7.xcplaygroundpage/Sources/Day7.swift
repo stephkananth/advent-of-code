@@ -12,12 +12,15 @@ public class Day7: Puzzle<Calibrations>, Solvable {
 
     public func solvePartOne() -> Int {
         input.calibrations
-            .filter { $1.evaluates(to: $0) }
+            .filter { $1.evaluates(to: $0, operations: [.add, .multiply]) }
             .keys
             .reduce(0, +)
     }
 
     public func solvePartTwo() -> Int {
-        0
+        input.calibrations
+            .filter { $1.evaluates(to: $0) }
+            .keys
+            .reduce(0, +)
     }
 }

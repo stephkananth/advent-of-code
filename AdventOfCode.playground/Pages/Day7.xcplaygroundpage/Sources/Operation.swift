@@ -7,5 +7,6 @@
 
 enum Operation: CaseIterable {
     case add
+    case concatenate
     case multiply
 }

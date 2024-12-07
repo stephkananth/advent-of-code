@@ -22,6 +22,6 @@ let partTwoExampleSolution = 11387
 
 let partTwoExampleResult = example.solvePartTwo()
 
-//let partTwoResult = puzzle.solvePartTwo()
+let partTwoResult = puzzle.solvePartTwo()
 
-//print("Part 2: \(partTwoResult)\n")
+print("Part 2: \(partTwoResult)\n")
