@@ -13,21 +13,22 @@ extension [Int] {
             return first == target
         }
 
-        return !operations.filter {
-            var copy = self
-            let partialResult = copy.removeFirst()
+        return !operations
+            .filter {
+                var copy = self
+                let partialResult = copy.removeFirst()
 
-            switch $0 {
-            case .add:
-                copy[0] += partialResult
-            case .concatenate:
-                copy[0] = Int("\(partialResult)\(copy[0])")!
-            case .multiply:
-                copy[0] *= partialResult
+                switch $0 {
+                case .add:
+                    copy[0] += partialResult
+                case .concatenate:
+                    copy[0] = Int("\(partialResult)\(copy[0])")!
+                case .multiply:
+                    copy[0] *= partialResult
+                }
+
+                return copy.evaluates(to: target, operations: operations)
             }
-
-            return copy.evaluates(to: target, operations: operations)
-        }
-        .isEmpty
+            .isEmpty
     }
 }
