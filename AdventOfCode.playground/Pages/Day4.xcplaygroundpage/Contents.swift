@@ -12,9 +12,9 @@ let partOneExampleSolution = 18
 
 let partOneExampleResult = example.solvePartOne()
 
-let partOneResult = puzzle.solvePartOne()
-
-print("Part 1: \(partOneResult)")
+if partOneExampleResult == partOneExampleSolution {
+    puzzle.partOne()
+}
 
 // MARK: - Part 2
 
@@ -22,6 +22,6 @@ let partTwoExampleSolution = 9
 
 let partTwoExampleResult = example.solvePartTwo()
 
-let partTwoResult = puzzle.solvePartTwo()
-
-print("Part 2: \(partTwoResult)\n")
+if partTwoExampleResult == partTwoExampleSolution {
+    puzzle.partTwo()
+}
