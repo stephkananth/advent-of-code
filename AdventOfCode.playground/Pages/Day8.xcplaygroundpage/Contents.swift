@@ -18,7 +18,7 @@ if partOneExampleResult == partOneExampleSolution {
 
 // MARK: - Part 2
 
-let partTwoExampleSolution = 11387
+let partTwoExampleSolution = 34
 
 let partTwoExampleResult = example.solvePartTwo()
 
@@ -47,7 +47,20 @@ class Day8: Puzzle<Roof>, Solvable {
     }
 
     func solvePartTwo() -> Int {
-        return 0
+        Set(
+            input.roof.antennas.flatMap { (_, indexes) in
+                indexes.flatMap { i in
+                    indexes
+                        .filter { i != $0 }
+                        .flatMap { j in
+                            input.roof.inLine(index1: i, index2: j).filter { index in
+                                input.roof.isValid(index: index)
+                            }
+                        }
+                }
+            }
+        )
+        .count
     }
 }
 
@@ -167,6 +180,25 @@ extension [[Antenna?]] {
             }
         }
         return antennas
+    }
+
+    func inLine(index1: RoofIndex, index2: RoofIndex) -> [RoofIndex] {
+        let difference = index2 - index1
+        var indexes: [RoofIndex] = []
+
+        var additiveIndex = index1
+        while isValid(index: additiveIndex) {
+            indexes.append(additiveIndex)
+            additiveIndex += difference
+        }
+
+        var subtractiveIndex = index1
+        while isValid(index: subtractiveIndex) {
+            indexes.append(subtractiveIndex)
+            subtractiveIndex -= difference
+        }
+
+        return indexes
     }
 }
 
