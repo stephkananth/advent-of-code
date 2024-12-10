@@ -11,13 +11,3 @@ enum Antenna: Hashable {
     case node(Character)
     case antinode
 }
-
-extension Character {
-    var antenna: Antenna? {
-        switch self {
-        case ".": return nil
-        case "#": return .antinode
-        default: return .node(self)
-        }
-    }
-}

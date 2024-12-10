@@ -16,14 +16,6 @@ extension [[Antenna?]] {
         (first?.count ?? 0) - 1
     }
 
-    func isValid(index: RoofIndex) -> Bool {
-        let (row, column) = (index.row, index.column)
-        guard row >= 0, column >= 0, row <= maxRow, column <= maxColumn else {
-            return false
-        }
-        return true
-    }
-
     var antennas: [Antenna: [RoofIndex]] {
         var antennas: [Antenna: [RoofIndex]] = [:]
         for row in 0..<count {
@@ -39,6 +31,14 @@ extension [[Antenna?]] {
             }
         }
         return antennas
+    }
+
+    func isValid(index: RoofIndex) -> Bool {
+        let (row, column) = (index.row, index.column)
+        guard row >= 0, column >= 0, row <= maxRow, column <= maxColumn else {
+            return false
+        }
+        return true
     }
 
     func inLine(index1: RoofIndex, index2: RoofIndex) -> [RoofIndex] {
